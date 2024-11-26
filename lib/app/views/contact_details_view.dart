@@ -112,8 +112,9 @@ class ContactDetailsView extends StatelessWidget {
                                       Provider.of<ContactController>(context,
                                               listen: false)
                                           .delete(contact.id!);
+
                                       Navigator.of(context)
-                                          .pushNamed(AppRoutes.home);
+                                          .pushReplacementNamed(AppRoutes.home);
                                     },
                                   ),
                                 ],

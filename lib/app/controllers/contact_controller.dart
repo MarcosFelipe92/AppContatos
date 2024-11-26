@@ -28,7 +28,9 @@ class ContactController extends ChangeNotifier {
   }
 
   Contact findById(int id) {
-    return _contacts.firstWhere((contact) => contact.id == id);
+    return _contacts.firstWhere((contact) => contact.id == id,
+        orElse: () =>
+            Contact(id: -1, name: 'Contato Padrão', email: '', phone: ''));
   }
 
   void create(Contact contact) async {
