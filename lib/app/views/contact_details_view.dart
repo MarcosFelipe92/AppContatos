@@ -1,6 +1,8 @@
+import 'package:app_contatos/app/components/app_bar_title.dart';
 import 'package:app_contatos/app/controllers/contact_controller.dart';
 import 'package:app_contatos/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 
 class ContactDetailsView extends StatelessWidget {
@@ -8,18 +10,18 @@ class ContactDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final phoneFormatter = MaskTextInputFormatter(
+        mask: '(##) #####-####', filter: {"#": RegExp(r'[0-9]')});
+
     final contactId = ModalRoute.of(context)!.settings.arguments as int;
     final contact = Provider.of<ContactController>(context).findById(contactId);
+    final formattedPhone = phoneFormatter.maskText(contact.phone);
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          "Detalhes do Contato",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+        title: const AppBarTitle(
+          label: "Detalhes do Contato",
         ),
       ),
       body: Column(
@@ -31,34 +33,83 @@ class ContactDetailsView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  contact.name,
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  textAlign: TextAlign.center,
+                  color: Colors.purple,
+                  elevation: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.person, color: Colors.white, size: 30),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            contact.name,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  contact.email,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                    color: Colors.black87,
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  textAlign: TextAlign.center,
+                  color: Colors.purple,
+                  elevation: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.email, color: Colors.white, size: 30),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            contact.email,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  contact.phone,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                    color: Colors.black87,
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  textAlign: TextAlign.center,
+                  color: Colors.purple,
+                  elevation: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.phone, color: Colors.white, size: 30),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            formattedPhone,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
