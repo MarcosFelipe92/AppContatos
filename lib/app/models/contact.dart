@@ -7,12 +7,12 @@ class Contact {
   Contact(
       {this.id, required this.name, required this.email, required this.phone});
 
-  factory Contact.fromMap(Map<String, dynamic> json) {
+  factory Contact.fromMap(Map<String, dynamic> map) {
     return Contact(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      phone: json['phone'],
+      id: map['id'],
+      name: map['name'],
+      email: map['email'],
+      phone: map['phone'],
     );
   }
 
@@ -24,4 +24,23 @@ class Contact {
       'phone': phone,
     };
   }
+
+  bool validate(Contact contact) {
+    return contact.name.isNotEmpty &&
+        contact.email.isNotEmpty &&
+        contact.phone.isNotEmpty;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Contact) return false;
+    return other.id == id &&
+        other.name == name &&
+        other.email == email &&
+        other.phone == phone;
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, email, phone);
 }

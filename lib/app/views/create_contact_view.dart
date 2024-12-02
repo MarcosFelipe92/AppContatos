@@ -52,6 +52,15 @@ class CreateContactView extends StatelessWidget {
                     ),
                   );
                   Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        "Contato adicionado com sucesso",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
                 }
               },
             ),

@@ -1,21 +1,67 @@
 import 'package:app_contatos/app/components/app_bar_title.dart';
 import 'package:app_contatos/app/controllers/contact_controller.dart';
+import 'package:app_contatos/app/models/contact.dart';
 import 'package:app_contatos/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 
-class ContactDetailsView extends StatelessWidget {
+class ContactDetailsView extends StatefulWidget {
   const ContactDetailsView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final phoneFormatter = MaskTextInputFormatter(
-        mask: '(##) #####-####', filter: {"#": RegExp(r'[0-9]')});
+  State<ContactDetailsView> createState() => _ContactDetailsViewState();
+}
+
+class _ContactDetailsViewState extends State<ContactDetailsView> {
+  final phoneFormatter = MaskTextInputFormatter(
+      mask: '(##) #####-####', filter: {"#": RegExp(r'[0-9]')});
+  Contact? contact;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
     final contactId = ModalRoute.of(context)!.settings.arguments as int;
-    final contact = Provider.of<ContactController>(context).findById(contactId);
-    final formattedPhone = phoneFormatter.maskText(contact.phone);
+
+    _loadContact(contactId);
+  }
+
+  Future<void> _loadContact(int contactId) async {
+    try {
+      final loadedContact =
+          await Provider.of<ContactController>(context, listen: false)
+              .findById(contactId);
+
+      setState(() {
+        contact = loadedContact;
+      });
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            error.toString(),
+            style: const TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.of(context).pop();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (contact == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    final formattedPhone = phoneFormatter.maskText(contact!.phone);
 
     return Scaffold(
       appBar: AppBar(
@@ -47,7 +93,7 @@ class ContactDetailsView extends StatelessWidget {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            contact.name,
+                            contact!.name,
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -74,7 +120,7 @@ class ContactDetailsView extends StatelessWidget {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            contact.email,
+                            contact!.email,
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.white,
@@ -162,10 +208,22 @@ class ContactDetailsView extends StatelessWidget {
                                     onPressed: () {
                                       Provider.of<ContactController>(context,
                                               listen: false)
-                                          .delete(contact.id!);
+                                          .delete(contact!.id!);
 
                                       Navigator.of(context)
                                           .pushReplacementNamed(AppRoutes.home);
+
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            "Contato excluído com sucesso",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          backgroundColor: Colors.green,
+                                        ),
+                                      );
                                     },
                                   ),
                                 ],
