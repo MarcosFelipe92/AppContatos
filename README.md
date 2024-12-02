@@ -1,16 +1,34 @@
-# app_contatos
+# Gerenciador de Contatos
 
-A new Flutter project.
+Um aplicativo simples para gerenciar contatos, com funcionalidades de cadastro, listagem, edição e exclusão de contatos, seguindo o padrão arquitetural MVC.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## Funcionalidades
+1. Cadastro de Contato
+2. Listagem de Contatos
+3. Edição de Contato
+4. Exclusão de Contato
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Arquitetura
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Este projeto utiliza o padrão **MVC (Model-View-Controller)**, que organiza o código em três camadas principais, com responsabilidades bem definidas.
+
+### 1. Camadas do MVC
+- **Model:** Define as entidades do sistema, como o contato, incluindo atributos e métodos de interação com o banco de dados.
+- **View:** Responsável pela interface gráfica e apresentação de dados para o usuário.
+- **Controller:** Gerencia o estado da aplicação, processa interações do usuário e coordena a comunicação entre Model e View.
+
+### 2. Camadas Auxiliares
+- **Data:** Configura e gerencia o banco de dados SQLite.
+- **Repository:** Abstrai a lógica de persistência de dados, centralizando as operações do banco.
+
+### 3. Fluxo de Dados
+1. **View:** Recebe interações do usuário (ex.: salvar ou excluir contato).
+2. **Controller:** Processa as interações e aciona as camadas adequadas.
+3. **Repository:** Gerencia o acesso e a manipulação dos dados no banco de dados.
+4. **Model:** Representa as entidades e encapsula regras básicas de validação ou transformação.
+
+
