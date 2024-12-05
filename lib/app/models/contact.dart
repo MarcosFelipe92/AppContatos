@@ -9,7 +9,7 @@ class Contact {
 
   factory Contact.fromMap(Map<String, dynamic> map) {
     return Contact(
-      id: map['id'],
+      id: int.parse(map['id']),
       name: map['name'],
       email: map['email'],
       phone: map['phone'],

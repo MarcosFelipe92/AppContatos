@@ -1,18 +1,15 @@
-import 'package:app_contatos/app/controllers/contact_controller.dart';
 import 'package:app_contatos/app/models/contact.dart';
 import 'package:app_contatos/app/repositories/contact_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockContactRepository extends Mock implements ContactRepository {}
+import '../controllers/contact_controller_test.dart';
 
 void main() {
   late ContactRepository repository;
-  late ContactController controller;
 
   setUp(() {
     repository = MockContactRepository();
-    controller = ContactController(repository);
   });
 
   group("FindAll", () {
@@ -29,7 +26,7 @@ void main() {
 
       when(() => repository.findAll()).thenAnswer((_) async => mockContacts);
 
-      final result = await controller.findAll();
+      final result = await repository.findAll();
 
       expect(result, equals(mockContacts));
       expect(result.length, 2);
