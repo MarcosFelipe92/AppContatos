@@ -58,7 +58,7 @@ class ContactController extends ChangeNotifier {
         throw InvalidContactException(message: "Formato do contato invalido");
       }
 
-      if (await _contactRepository.existsByEmail(contact.email)) {
+      if (await _contactRepository.findByEmail(contact.email)) {
         throw ExistEmailException(
             message: "Já existe um contato com o e-mail '${contact.email}'.");
       }
@@ -110,6 +110,8 @@ class ContactController extends ChangeNotifier {
       await _contactRepository.delete(id);
       _contacts.removeWhere((contact) => contact.id == id);
       notifyListeners();
+    } on ContactNotFoundException {
+      rethrow;
     } catch (e) {
       throw DatabaseException(
           message: "Erro inesperado tente novamente mais tarde");
