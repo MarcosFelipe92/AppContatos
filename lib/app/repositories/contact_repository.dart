@@ -57,14 +57,15 @@ class ContactRepository {
     return result.isNotEmpty;
   }
 
-  Future<void> create(Contact contact) async {
+  Future<int> create(Contact contact) async {
     try {
       final db = await DatabaseManager.getDatabase();
-      await db.insert(
+      final id = await db.insert(
         'contacts',
         contact.toMap(),
         conflictAlgorithm: ConflictAlgorithm.fail,
       );
+      return id;
     } catch (e) {
       throw Exception("Erro inesperado: $e");
     }

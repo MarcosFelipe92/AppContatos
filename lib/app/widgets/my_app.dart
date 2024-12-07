@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             AppRoutes.home: (context) => const ListContactView(),
             AppRoutes.createContactForm: (context) => CreateContactView(),
             AppRoutes.updateContactForm: (context) => UpdateContactView(),
-            AppRoutes.contactDetails: (context) => ContactDetailsView(),
+            AppRoutes.contactDetails: (context) => const ContactDetailsView(),
           },
         ));
   }

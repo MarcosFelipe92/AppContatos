@@ -59,8 +59,16 @@ class ContactController extends ChangeNotifier {
             message: "Já existe um contato com o e-mail '${contact.email}'.");
       }
 
-      await _contactRepository.create(contact);
-      _contacts.add(contact);
+      final id = await _contactRepository.create(contact);
+
+      final createdContact = Contact(
+        id: id,
+        name: contact.name,
+        email: contact.email,
+        phone: contact.phone,
+      );
+
+      _contacts.add(createdContact);
       notifyListeners();
     } on InvalidContactException {
       rethrow;

@@ -112,7 +112,8 @@ void main() {
       when(() => repository.existsByEmail(contactEmail))
           .thenAnswer((_) async => false);
 
-      when(() => repository.create(mockContact)).thenAnswer((_) async {});
+      when(() => repository.create(mockContact))
+          .thenAnswer((_) async => contactId);
 
       await controller.create(mockContact);
 

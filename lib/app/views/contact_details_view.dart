@@ -216,6 +216,7 @@ class _ContactDetailsViewState extends State<ContactDetailsView> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
+                                          duration: Duration(seconds: 1),
                                           content: Text(
                                             "Contato excluído com sucesso",
                                             style:

@@ -54,6 +54,7 @@ class CreateContactView extends StatelessWidget {
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
+                      duration: Duration(seconds: 1),
                       content: Text(
                         "Contato adicionado com sucesso",
                         style: TextStyle(color: Colors.white),
