@@ -47,7 +47,7 @@ class ContactRepository {
     }
   }
 
-  Future<bool> findByEmail(String email) async {
+  Future<bool> existsByEmail(String email) async {
     final db = await DatabaseManager.getDatabase();
     final result = await db.query(
       'contacts',

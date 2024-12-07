@@ -21,10 +21,6 @@ class ContactController extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  int get count {
-    return _contacts.length;
-  }
-
   Future<List<Contact>> findAll() async {
     try {
       _contacts = await _contactRepository.findAll();
@@ -52,13 +48,13 @@ class ContactController extends ChangeNotifier {
     }
   }
 
-  void create(Contact contact) async {
+  Future<void> create(Contact contact) async {
     try {
       if (!contact.validate(contact)) {
         throw InvalidContactException(message: "Formato do contato invalido");
       }
 
-      if (await _contactRepository.findByEmail(contact.email)) {
+      if (await _contactRepository.existsByEmail(contact.email)) {
         throw ExistEmailException(
             message: "Já existe um contato com o e-mail '${contact.email}'.");
       }
@@ -78,6 +74,9 @@ class ContactController extends ChangeNotifier {
 
   Future<void> update(Contact contact) async {
     try {
+      if (!contact.validate(contact)) {
+        throw InvalidContactException(message: "Formato do contato invalido");
+      }
       final existingContact = await _contactRepository.findById(contact.id!);
       if (existingContact == null) {
         throw ContactNotFoundException(
@@ -91,6 +90,8 @@ class ContactController extends ChangeNotifier {
         _contacts[index] = contact;
         notifyListeners();
       }
+    } on InvalidContactException {
+      rethrow;
     } on ContactNotFoundException {
       rethrow;
     } catch (e) {

@@ -30,7 +30,7 @@ class _ListContactViewState extends State<ListContactView> {
         Provider.of<ContactController>(context, listen: false);
     final contacts = await contactController.findAll();
     setState(() {
-      _filteredContacts = contacts; // Inicializa contatos filtrados
+      _filteredContacts = contacts;
     });
   }
 
